@@ -107,6 +107,6 @@ class AvailableActions
             self::STATUS_NEW => [self::ACTION_CANCEL, self::ACTION_RESPONSE],
         ];
 
-        return $map[$status] ?? null;
+        return $map[$status] ?? [];
     }
 }
