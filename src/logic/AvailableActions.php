@@ -1,4 +1,5 @@
 <?php
+
 namespace taskforce\logic;
 
 class AvailableActions
@@ -14,10 +15,10 @@ class AvailableActions
     const ACTION_DENY = 'act_deny';
     const ACTION_COMPLETE = 'act_complete';
 
-    private $performerId = null;
-    private $clientId = null;
+    private ?int $performerId;
+    private int $clientId;
 
-    private $status = null;
+    private $status;
 
     /**
      * AvailableActionsStrategy constructor.
@@ -33,40 +34,80 @@ class AvailableActions
         $this->clientId = $clientId;
     }
 
-    public function getNextStatus(string $action)
+
+    /**
+     * @return string[]
+     */
+    public function getStatusesMap(): array
+    {
+        return [
+            self::STATUS_NEW => 'Новое',
+            self::STATUS_CANCEL => 'Отменено',
+            self::STATUS_IN_PROGRESS => 'В работе',
+            self::STATUS_COMPLETE => 'Выполнено',
+            self::STATUS_EXPIRED => 'Провалено',
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getActionsMap(): array
+    {
+        return [
+            self::ACTION_CANCEL => 'Отменить',
+            self::ACTION_RESPONSE => 'Откликнуться',
+            self::ACTION_COMPLETE => 'Выполнено',
+            self::ACTION_DENY => 'Отказаться',
+        ];
+    }
+
+    /**
+     * @param string $action
+     * @return string|null
+     */
+    public function getNextStatus(string $action): ?string
     {
         $map = [
             self::ACTION_COMPLETE => self::STATUS_COMPLETE,
             self::ACTION_CANCEL => self::STATUS_CANCEL,
             self::ACTION_DENY => self::STATUS_CANCEL,
-            self::ACTION_RESPONSE => null
         ];
 
-        return $map[$action];
+        return $map[$action] ?? null;
     }
 
-    public function setStatus(string $status)
+    /**
+     * @param string $status
+     * @return void
+     */
+    private function setStatus(string $status): void
     {
-        $availableStatuses = [self::STATUS_NEW, self::STATUS_IN_PROGRESS, self::STATUS_CANCEL, self::STATUS_COMPLETE,
-            self::STATUS_EXPIRED];
+        $availableStatuses = [
+            self::STATUS_NEW,
+            self::STATUS_IN_PROGRESS,
+            self::STATUS_CANCEL,
+            self::STATUS_COMPLETE,
+            self::STATUS_EXPIRED
+        ];
 
         if (in_array($status, $availableStatuses)) {
             $this->status = $status;
         }
     }
 
-
-    private function getStatusMap()
+    /**
+     * Возвращает действия, доступные для указанного статуса
+     * @param string $status
+     * @return array
+     */
+    private function statusAllowedActions(string $status): array
     {
         $map = [
-            self::STATUS_NEW => [self::STATUS_EXPIRED, self::STATUS_CANCEL],
-            self::STATUS_IN_PROGRESS => [self::STATUS_CANCEL, self::STATUS_COMPLETE],
-            self::STATUS_CANCEL => [],
-            self::STATUS_COMPLETE => [],
-            self::STATUS_EXPIRED => [self::STATUS_CANCEL]
+            self::STATUS_IN_PROGRESS => [self::ACTION_DENY, self::ACTION_COMPLETE],
+            self::STATUS_NEW => [self::ACTION_CANCEL, self::ACTION_RESPONSE],
         ];
 
-        return $map;
+        return $map[$status] ?? null;
     }
-
 }
