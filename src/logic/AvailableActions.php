@@ -61,7 +61,7 @@ class AvailableActions
             ResponseAction::class => null
         ];
 
-        return $map[$action];
+        return $map[get_class($action)];
     }
 
     /**
