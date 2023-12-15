@@ -23,17 +23,16 @@ class AvailableActions
     /**
      * AvailableActionsStrategy constructor.
      * @param string $status
-     * @param int $performerId
+     * @param int|null $performerId
      * @param int $clientId
      */
-    public function __construct(string $status, ?int $performerId, int $clientId)
+    public function __construct(string $status, int $clientId, ?int $performerId = null)
     {
         $this->setStatus($status);
 
         $this->performerId = $performerId;
         $this->clientId = $clientId;
     }
-
 
     /**
      * @return string[]
