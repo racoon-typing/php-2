@@ -52,7 +52,7 @@ class AvailableActions
         return array_values($allowedActions);
     }
 
-    public function getNextStatus($action)
+    public function getNextStatus(string $action)
     {
         $map = [
             CompleteAction::class => self::STATUS_COMPLETE,
@@ -61,7 +61,7 @@ class AvailableActions
             ResponseAction::class => null
         ];
 
-        return $map[get_class($action)];
+        return $map[$action];
     }
 
     /**
