@@ -4,9 +4,9 @@ namespace taskforce\logic\actions;
 
 abstract class AbstractAction
 {
-    abstract public static function getLabel();
+    abstract public static function getLabel(): string;
 
-    abstract public static function getInternalName();
+    abstract public static function getInternalName(): string;
 
-    abstract public static function checkRights($userId, $performerId, $clientId);
+    abstract public static function checkRights(int $userId, ?int $performerId, ?int $clientId): bool;
 }

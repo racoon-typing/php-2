@@ -2,12 +2,13 @@
 
 namespace taskforce\logic;
 
+use taskforce\logic\actions\AbstractAction;
 use taskforce\logic\actions\CancelAction;
 use taskforce\logic\actions\CompleteAction;
 use taskforce\logic\actions\DenyAction;
 use taskforce\logic\actions\ResponseAction;
 use taskforce\logic\exception\AvailableActionsException;
-use taskforce\logic\exception\StatusException;
+use taskforce\logic\exception\StatusActionException;
 
 class AvailableActions
 {
@@ -21,9 +22,9 @@ class AvailableActions
     const ROLE_CLIENT = 'customer';
 
     private ?int $performerId;
-    private int $clientId;
+    private ?int $clientId;
 
-    private $status;
+    private ?string $status = null;
 
     /**
      * AvailableActionsStrategy constructor.
@@ -33,25 +34,13 @@ class AvailableActions
      */
     public function __construct(string $status, int $clientId, ?int $performerId = null)
     {
-        $statuses = [
-            self::STATUS_NEW,
-            self::STATUS_IN_PROGRESS,
-            self::STATUS_CANCEL,
-            self::STATUS_COMPLETE,
-            self::STATUS_EXPIRED
-        ];
-
-        if (!in_array($status, $statuses)) {
-            throw new StatusException('Указан невалидный статус');
-        }
-
         $this->setStatus($status);
 
         $this->performerId = $performerId;
         $this->clientId = $clientId;
     }
 
-    public function getAvailableActions(string $role, int $id)
+    public function getAvailableActions(string $role, int $id): array
     {
         $roles = [
             self::ROLE_CLIENT,
@@ -74,7 +63,7 @@ class AvailableActions
         return array_values($allowedActions);
     }
 
-    public function getNextStatus(string $action)
+    public function getNextStatus(AbstractAction $action): ?string
     {
         $map = [
             CompleteAction::class => self::STATUS_COMPLETE,
@@ -90,7 +79,7 @@ class AvailableActions
      * @param string $status
      * @return void
      */
-    private function setStatus(string $status): void
+    public function setStatus(string $status): void
     {
         $availableStatuses = [
             self::STATUS_NEW,
@@ -100,8 +89,19 @@ class AvailableActions
             self::STATUS_EXPIRED
         ];
 
-        if (in_array($status, $availableStatuses)) {
-            $this->status = $status;
+        if (!in_array($status, $availableStatuses)) {
+            throw new StatusActionException("Неизвестный статус $status");
+        }
+
+        $this->status = $status;
+    }
+
+    public function checkRole(string $role): void
+    {
+        $availableRole = [self::ROLE_PERFORMER, self::ROLE_CLIENT];
+
+        if () {
+            
         }
     }
 
@@ -109,7 +109,7 @@ class AvailableActions
      * Возвращает действия, доступные для каждой роли
      * @return array
      */
-    private function roleAllowedActions()
+    private function roleAllowedActions(): array
     {
         $map = [
             self::ROLE_CLIENT => [CancelAction::class, CompleteAction::class],
@@ -123,7 +123,7 @@ class AvailableActions
      * Возвращает действия, доступные для указанного статуса
      * @return array
      */
-    private function statusAllowedActions()
+    private function statusAllowedActions(): array
     {
         $map = [
             self::STATUS_CANCEL => [],
@@ -136,7 +136,7 @@ class AvailableActions
         return $map;
     }
 
-    private function getStatusMap()
+    private function getStatusMap(): array
     {
         $map = [
             self::STATUS_NEW => [self::STATUS_EXPIRED, self::STATUS_CANCEL],

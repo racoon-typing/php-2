@@ -11,8 +11,8 @@ ini_set('assets.exseption', 1);
 try {
     $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 
-    $this->setStatus(AvailableActions::STATUS_CANCEL);
-    $this->AvailableActions('performer2', 2);
+    AvailableActions->setStatus(AvailableActions::STATUS_CANCEL);
+    AvailableActions->AvailableActions('performer2', 2);
 } catch (StatusException $e) {
     error_log('Ошибка при установке статуса' . $e->getMessage());
 } catch (AvailableActionsException $e) {
