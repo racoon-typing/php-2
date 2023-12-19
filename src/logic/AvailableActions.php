@@ -6,7 +6,7 @@ use taskforce\logic\actions\CancelAction;
 use taskforce\logic\actions\CompleteAction;
 use taskforce\logic\actions\DenyAction;
 use taskforce\logic\actions\ResponseAction;
-
+use taskforce\logic\exception\StatusException;
 
 class AvailableActions
 {
@@ -32,6 +32,18 @@ class AvailableActions
      */
     public function __construct(string $status, int $clientId, ?int $performerId = null)
     {
+        $statuses = [
+            self::STATUS_NEW,
+            self::STATUS_IN_PROGRESS,
+            self::STATUS_CANCEL,
+            self::STATUS_COMPLETE,
+            self::STATUS_EXPIRED
+        ];
+
+        if (!in_array($status, $statuses)) {
+            throw new StatusException('Указан невалидный статус');
+        }
+
         $this->setStatus($status);
 
         $this->performerId = $performerId;
