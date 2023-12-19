@@ -6,6 +6,7 @@ use taskforce\logic\actions\CancelAction;
 use taskforce\logic\actions\CompleteAction;
 use taskforce\logic\actions\DenyAction;
 use taskforce\logic\actions\ResponseAction;
+use taskforce\logic\exception\AvailableActionsException;
 use taskforce\logic\exception\StatusException;
 
 class AvailableActions
@@ -52,6 +53,15 @@ class AvailableActions
 
     public function getAvailableActions(string $role, int $id)
     {
+        $roles = [
+            self::ROLE_CLIENT,
+            self::ROLE_PERFORMER,
+        ];
+
+        if (!in_array($role, $roles)) {
+            throw new AvailableActionsException('Указанная роль недейтсвительна');
+        }
+
         $statusActions = $this->statusAllowedActions()[$this->status];
         $roleActions = $this->roleAllowedActions()[$role];
 
