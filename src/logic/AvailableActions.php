@@ -7,7 +7,6 @@ use taskforce\logic\actions\CancelAction;
 use taskforce\logic\actions\CompleteAction;
 use taskforce\logic\actions\DenyAction;
 use taskforce\logic\actions\ResponseAction;
-use taskforce\logic\exception\AvailableActionsException;
 use taskforce\logic\exception\StatusActionException;
 
 class AvailableActions
@@ -42,14 +41,7 @@ class AvailableActions
 
     public function getAvailableActions(string $role, int $id): array
     {
-        $roles = [
-            self::ROLE_CLIENT,
-            self::ROLE_PERFORMER,
-        ];
-
-        if (!in_array($role, $roles)) {
-            throw new AvailableActionsException('Указанная роль недейтсвительна');
-        }
+        $this->checkRole($role);
 
         $statusActions = $this->statusAllowedActions()[$this->status];
         $roleActions = $this->roleAllowedActions()[$role];
@@ -90,7 +82,7 @@ class AvailableActions
         ];
 
         if (!in_array($status, $availableStatuses)) {
-            throw new StatusActionException("Неизвестный статус $status");
+            throw new StatusActionException("Неизвестный статус: $status");
         }
 
         $this->status = $status;
@@ -98,10 +90,10 @@ class AvailableActions
 
     public function checkRole(string $role): void
     {
-        $availableRole = [self::ROLE_PERFORMER, self::ROLE_CLIENT];
+        $availableRoles = [self::ROLE_PERFORMER, self::ROLE_CLIENT];
 
-        if () {
-            
+        if (!in_array($role, $availableRoles)) {
+            throw new StatusActionException("Неизвестный роль: $role");
         }
     }
 
