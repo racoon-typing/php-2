@@ -1,5 +1,7 @@
 <?php
 
+use taskforce\exception\ConverterException;
+
 class CsvSqlConverter
 {
     protected array $filesToConvert = [];
@@ -45,7 +47,6 @@ class CsvSqlConverter
     protected function getSqlContent(string $tableName, array $columns, array $values): string
     {
         $columnsString = implode(', ', $columns);
-
         $sql = "INSERT INTO $tableName ($columnsString) VALUES ";
 
         foreach ($values as $row) {
@@ -62,7 +63,17 @@ class CsvSqlConverter
         return $sql;
     }
 
+    protected function saveSqlContent(string $tableName, string $directory, string $content): string
+    {
+        if (!is_dir($directory)) {
+            throw new ConverterException('Директория для выходных файлов не существует');
+        }
 
+        $filename = $directory . DIRECTORY_SEPARATOR . $tableName . '.sql';
+        file_put_contents($filename, $content);
+
+        return $filename;
+    }
 
     protected function loadCsvFiles(string $directory)
     {

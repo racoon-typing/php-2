@@ -3,8 +3,7 @@
 namespace taskforce\convertor;
 
 use SplFileObject;
-use taskforce\exception\FileFormatException;
-use taskforce\exception\SourceFileException;
+use taskforce\exception\ConverterException;
 
 class CsvReader
 {
@@ -22,11 +21,11 @@ class CsvReader
     public function import()
     {
         if (!$this->validateColumns($this->columns)) {
-            throw new FileFormatException("Заданы неверные заголовки столбцов");
+            throw new ConverterException("Заданы неверные заголовки столбцов");
         }
 
         if (!file_exists($this->filename)) {
-            throw new SourceFileException('Файл не найден');
+            throw new ConverterException('Файл не найден');
         }
 
         $this->file = new SplFileObject($this->filename);

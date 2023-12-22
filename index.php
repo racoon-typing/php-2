@@ -1,42 +1,23 @@
 <?php
 
-use taskforce\convertor\CsvReader;
-use taskforce\exception\FileFormatException;
-use taskforce\exception\SourceFileException;
+// use taskforce\convertor\CsvReader;
+use taskforce\exception\ConverterException;
 
 require_once 'vendor/autoload.php';
 ini_set('assets.exseption', 1);
 
 
 // Мой вариант
-$loader = new CsvReader('./data/cities.csv', ['name', 'lat', 'long']);
-$loader2 = new CsvReader('./data/categories.csv', ['name', 'icon']);
-$result = [];
-$result2 = [];
+$converter = new CsvSqlConverter('data/csv');
+$result = $converter->convertFiles('data/sql');
 
-try {
-    $loader->import();
-    $loader->getData();
-    $result = $loader->getSql();
+var_dump('new -> performer', !empty($newToPerformer));
 
-    $loader2->import();
-    $loader2->getData();
-    $result2 = $loader2->getSql();
-} catch (SourceFileException $e) {
-    echo "Не удалось обработать csv файл: " . $e->getMessage();
-    error_log("Не удалось обработать csv файл: " . $e->getMessage());
-} catch (FileFormatException $e) {
-    echo "Неверная форма файла импорта: " . $e->getMessage();
-    error_log("Неверная форма файла импорта: " . $e->getMessage());
-}
-
-// var_dump($result);
-// var_dump($result2);
 
 
 
 // use taskforce\logic\AvailableActions;
-// use taskforce\logic\exception\StatusActionException;
+// use taskforce\exception\StatusActionException;
 
 
 // try {
