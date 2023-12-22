@@ -1,6 +1,6 @@
 <?php
 
-namespace taskforce\csv;
+namespace taskforce\convertor;
 
 use SplFileObject;
 use taskforce\exception\FileFormatException;

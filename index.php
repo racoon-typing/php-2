@@ -1,6 +1,6 @@
 <?php
 
-use taskforce\csv\CsvReader;
+use taskforce\convertor\CsvReader;
 use taskforce\exception\FileFormatException;
 use taskforce\exception\SourceFileException;
 
@@ -31,7 +31,7 @@ try {
 }
 
 // var_dump($result);
-var_dump($result2);
+// var_dump($result2);
 
 
 
