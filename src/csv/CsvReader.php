@@ -28,29 +28,42 @@ class CsvReader
 
     public function import(): void
     {
-        if (!$this->validateColumns($this->columns)) {
-            throw new FileFormatException("Заданы неверные заголовки столбцов");
-        }
-        
-        if (!file_exists($this->filename)) {
-            throw new SourceFileException("Файл не существует");
-        }
-        
         $this->file = new SplFileObject($this->filename, 'r');
+        $this->file->setCsvControl(',');
 
-        if (!$this->file) {
-            throw new SourceFileException("Не удалось открыть файл на чтение");
+        foreach ($this->file as $row) {
+            yield $row;
         }
 
-        $header_data = $this->getHeaderData();
-
-        if ($header_data !== $this->columns) {
-            throw new FileFormatException("Исходный файл не содержит необходимых столбцов");
+        foreach ($csvData as $row) {
+            $this->getNextLine();
+            $this->result[] = $row;
+            echo implode(', ', $row) . PHP_EOL;
         }
 
-        while ($line = $this->getNextLine()) {
-            $this->result[] = $line;
-        }
+        // if (!$this->validateColumns($this->columns)) {
+        //     throw new FileFormatException("Заданы неверные заголовки столбцов");
+        // }
+
+        // if (!file_exists($this->filename)) {
+        //     throw new SourceFileException("Файл не существует");
+        // }
+
+        // $this->file = new SplFileObject($this->filename, 'r');
+
+        // if (!$this->file) {
+        //     throw new SourceFileException("Не удалось открыть файл на чтение");
+        // }
+
+        // $header_data = $this->getHeaderData();
+
+        // if ($header_data !== $this->columns) {
+        //     throw new FileFormatException("Исходный файл не содержит необходимых столбцов");
+        // }
+
+        // while ($line = $this->getNextLine()) {
+        //     $this->result[] = $line;
+        // }
     }
 
     public function getData(): array
@@ -68,13 +81,14 @@ class CsvReader
 
     private function getNextLine(): ?array
     {
-        $result = null;
 
-        if (!$this->file->eof()) {
-            $result = $this->file->fgetcsv();
-        }
+        // $result = null;
 
-        return $result;
+        // if (!$this->file->eof()) {
+        //     $result = $this->file->fgetcsv();
+        // }
+
+        // return $result;
     }
 
     private function validateColumns(array $columns): bool
@@ -82,13 +96,12 @@ class CsvReader
         $result = true;
 
         if (count($columns)) {
-            foreach($columns as $column) {
+            foreach ($columns as $column) {
                 if (!is_string($column)) {
                     $result = false;
                 }
             }
-        }
-        else {
+        } else {
             $result = false;
         }
 

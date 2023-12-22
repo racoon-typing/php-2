@@ -26,7 +26,7 @@ ini_set('assets.exseption', 1);
 // var_dump('new -> performer', !empty($newToPerformer));
 
 
-$loader = new CsvReader('data/cities.csv', ['name', 'lat', 'long']);
+$loader = new CsvReader('./data/cities.csv', ['name', 'lat']);
 $result = [];
 
 try {
