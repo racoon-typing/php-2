@@ -10,12 +10,18 @@ ini_set('assets.exseption', 1);
 
 // Мой вариант
 $loader = new CsvReader('./data/cities.csv', ['name', 'lat', 'long']);
+$loader2 = new CsvReader('./data/categories.csv', ['name', 'icon']);
 $result = [];
+$result2 = [];
 
 try {
-    $result = $loader->import();
-    // $loader->getSql();
+    $loader->import();
+    $loader->getData();
+    $result = $loader->getSql();
 
+    $loader2->import();
+    $loader2->getData();
+    $result2 = $loader2->getSql();
 } catch (SourceFileException $e) {
     echo "Не удалось обработать csv файл: " . $e->getMessage();
     error_log("Не удалось обработать csv файл: " . $e->getMessage());
@@ -24,7 +30,8 @@ try {
     error_log("Неверная форма файла импорта: " . $e->getMessage());
 }
 
-var_dump($result);
+// var_dump($result);
+var_dump($result2);
 
 
 
