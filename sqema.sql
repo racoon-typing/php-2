@@ -41,7 +41,6 @@ CREATE TABLE tasks (
 
 CREATE TABLE cities (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    city INT,
     city_name VARCHAR(128),
     city_lon VARCHAR(128),
     city_lat VARCHAR(128)
