@@ -1,4 +1,5 @@
 CREATE DATABASE taskForce;
+
 USE taskForce;
 
 CREATE TABLE users (

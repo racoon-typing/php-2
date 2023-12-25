@@ -9,7 +9,7 @@ use taskforce\convertor\CsvSqlConverter;
 $converter = new CsvSqlConverter('data/csv');
 $result = $converter->convertFiles('data/sql');
 
-var_dump($result);
+// var_dump($result);
 
 
 
