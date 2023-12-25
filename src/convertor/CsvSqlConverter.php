@@ -1,6 +1,11 @@
 <?php
+namespace taskforce\convertor;
 
+use DirectoryIterator;
+use SplFileInfo;
+use SplFileObject;
 use taskforce\exception\ConverterException;
+
 
 class CsvSqlConverter
 {

@@ -1,24 +1,21 @@
 <?php
-
-// use taskforce\convertor\CsvReader;
-use taskforce\exception\ConverterException;
-
 require_once 'vendor/autoload.php';
 ini_set('assets.exseption', 1);
+
+use taskforce\convertor\CsvSqlConverter;
 
 
 // Мой вариант
 $converter = new CsvSqlConverter('data/csv');
 $result = $converter->convertFiles('data/sql');
 
-var_dump('new -> performer', !empty($newToPerformer));
+var_dump($result);
 
 
 
 
 // use taskforce\logic\AvailableActions;
 // use taskforce\exception\StatusActionException;
-
 
 // try {
 //     $strategy = new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
