@@ -26,9 +26,7 @@
 // $newToPerformer = $strategy->getAvailableActions(AvailableActions::ROLE_PERFORMER, 2);
 // var_dump('new -> performer', !empty($newToPerformer));
 
-use taskforce\logic\AvailableActions;
 
-new AvailableActions(AvailableActions::STATUS_NEW, 3, 1);
 
 // comment out the following two lines when deployed to production
 defined('YII_DEBUG') or define('YII_DEBUG', true);
