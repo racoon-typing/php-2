@@ -9,6 +9,7 @@ use taskforce\logic\actions\DenyAction;
 use taskforce\logic\actions\ResponseAction;
 use taskforce\logic\exception\StatusActionException;
 
+
 class AvailableActions
 {
     const STATUS_NEW = 'new';
