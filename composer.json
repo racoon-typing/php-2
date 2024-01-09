@@ -2,7 +2,7 @@
     "name": "taskforce/taskforce",
     "autoload": {
         "psr-4": {
-            "taskforce\\": "taskforce/"
+            "taskforce\\": "src/"
         }
     },
     "authors": [
