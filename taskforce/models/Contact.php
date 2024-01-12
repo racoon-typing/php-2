@@ -2,15 +2,10 @@
 
 namespace app\models;
 
-use yii\base\Model;
+use yii\db\ActiveRecord;
 
-class Contact extends Model
+class Contact extends ActiveRecord
 {
-    public $name;
-    public $phone;
-    public $email;
-    public $position;
-
     public function attributeLabels()
     {
         return [
@@ -18,6 +13,13 @@ class Contact extends Model
             'phone' => 'Телефон',
             'email' => 'Электронная почта',
             'position' => 'Должность'
+        ];
+    }
+    
+    public function rules()
+    {
+        return [
+            [['name', 'phone', 'email', 'position'], 'safe']
         ];
     }
 }
