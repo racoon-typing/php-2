@@ -78,5 +78,5 @@ CREATE TABLE response (
     price INT,
     performer INT,
     response_mark INT,
-    FOREIGN KEY (performer) REFERENCES users(id),
+    FOREIGN KEY (performer) REFERENCES users(id)
 );
